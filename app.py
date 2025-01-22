@@ -15,22 +15,7 @@ scaler = pickle.load(open('scaling.pkl', 'rb'))
 def home():
     return render_template('home.html')
 
-@app.route('/predict_api', methods=['POST'])
-def predict_api():
-    # Get the data from the POST request
-    data = request.json['data']
-    print(data)
-    # Convert the data into a numpy array
-    print(np.array(list(data.values())).reshape(1, -1))
-    # Scale the data
-    new_data = scaler.transform(np.array(list(data.values())).reshape(1, -1))
-    # Make the prediction
-    output = regmodel.predict(new_data)
-    print(output[0])
-    # Return the prediction
-    return jsonify(output[0])
-
-@app.route('/predict', methods=['POST'])
+@app.route('/', methods=['POST'])
 def predict():
     data=[float(x) for x in request.form.values()]
     final_input = scaler.transform(np.array(data).reshape(1, -1))
